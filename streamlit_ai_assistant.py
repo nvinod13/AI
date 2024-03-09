@@ -1,39 +1,75 @@
-import pandas as pd
 from transformers import pipeline
+import pandas as pd
+import numpy as np
 
-# Initialize GPT-Neo pipeline
+# Initialize the GPT-Neo pipeline
 gpt_neo = pipeline('text-generation', model='EleutherAI/gpt-neo-2.7B')
 
 # Sample dataset
+np.random.seed(0)
 data = {
-    "Date": ["2024-03-01", "2024-03-02", "2024-03-03", "2024-03-04", "2024-03-05", "2024-03-06", "2024-03-07", "2024-03-08"],
-    "Description": ["Whole Foods Market", "Netflix Subscription", "Starbucks", "Electricity Bill", "AMC Theaters", "Local Water Utility", "McDonald's", "Trader Joe's"],
-    "Category": ["Groceries", "Entertainment", "Dining Out", "Utilities", "Entertainment", "Utilities", "Dining Out", "Groceries"],
-    "Amount ($)": [95.20, 13.99, 5.75, 60.00, 25.00, 30.00, 12.50, 55.00]
+    'Date': pd.date_range(start='2024-01-01', periods=10, freq='D'),
+    'Category': np.random.choice(['Groceries', 'Entertainment', 'Utilities'], size=10),
+    'Amount ($)': np.round(np.random.uniform(10, 100, size=10), 2),
+    'Time of Day': np.random.choice(['Morning', 'Afternoon', 'Evening'], size=10),
+    'State': np.random.choice(['State1', 'State2', 'State3'], size=10),
 }
 df = pd.DataFrame(data)
 
-def search_dataset_for_category(category):
-    # Sum amounts for the specified category
-    category_sum = df[df['Category'].str.contains(category, case=False, na=False)]['Amount ($)'].sum()
-    if category_sum > 0:
-        return f"Your total spending in {category} is ${category_sum:.2f}."
+# Functions to handle queries
+def get_summary_by_column(column_name):
+    if column_name in df.columns:
+        return df.groupby(column_name)['Amount ($)'].describe()
     else:
-        return "It seems like there were no expenses in that category."
+        return f"Column {column_name} not found."
 
-def generate_response(prompt):
-    # Use GPT-Neo to get an understanding of the query (simulated for this example)
-    interpreted_query = "Groceries"  # Placeholder for the model's output
+def get_spending_metrics():
+    metrics = {
+        'Highest Spend': df['Amount ($)'].max(),
+        'Lowest Spend': df['Amount ($)'].min(),
+        'Average Spend': df['Amount ($)'].mean(),
+        'Median Spend': df['Amount ($)'].median(),
+    }
+    return metrics
+
+def get_grouped_spends(col1, col2):
+    if col1 in df.columns and col2 in df.columns:
+        return df.groupby([col1, col2])['Amount ($)'].sum().reset_index(name='Total Spent')
+    else:
+        return "One or both columns not found."
+
+# Simulate GPT-Neo Interpretation (replace this with actual GPT-Neo call for real use)
+def interpret_query(query):
+    # This is a placeholder for the GPT-Neo interpretation.
+    # You would replace this logic with actual calls to gpt_neo() function
+    # and then parse its output to understand the user's intent.
+    if "summary" in query:
+        return "summary", "Category"
+    elif "metrics" in query:
+        return "metrics", None
+    elif "grouped" in query:
+        return "grouped", ("Category", "State")
+    else:
+        return "unknown", None
+
+# Example query processing
+def process_query(query):
+    interpreted_action, details = interpret_query(query)
     
-    # Generate a response based on the interpreted query
-    response = search_dataset_for_category(interpreted_query)
+    if interpreted_action == "summary":
+        column_name = details
+        result = get_summary_by_column(column_name)
+    elif interpreted_action == "metrics":
+        result = get_spending_metrics()
+    elif interpreted_action == "grouped":
+        col1, col2 = details
+        result = get_grouped_spends(col1, col2)
+    else:
+        result = "Sorry, I couldn't understand your request."
     
-    return response
+    return result
 
-# Example prompt from the user
-prompt = "How much did I spend on groceries last month?"
-
-# Generate response based on the prompt
-response = generate_response(prompt)
-
-print(response)
+# Example Usage
+query = "I want a summary by Category"
+result = process_query(query)
+print(result)
