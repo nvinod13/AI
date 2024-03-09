@@ -1,5 +1,8 @@
-import streamlit as st
 import pandas as pd
+from transformers import pipeline
+
+# Initialize GPT-Neo pipeline
+gpt_neo = pipeline('text-generation', model='EleutherAI/gpt-neo-2.7B')
 
 # Sample dataset
 data = {
@@ -8,29 +11,29 @@ data = {
     "Category": ["Groceries", "Entertainment", "Dining Out", "Utilities", "Entertainment", "Utilities", "Dining Out", "Groceries"],
     "Amount ($)": [95.20, 13.99, 5.75, 60.00, 25.00, 30.00, 12.50, 55.00]
 }
-
 df = pd.DataFrame(data)
 
-def ai_assistant_improved(prompt):
-    prompt = prompt.lower().replace("?", "")
-    if "total spending" in prompt:
-        total_spending = df["Amount ($)"].sum()
-        return f"Your total spending is ${total_spending:.2f}."
-    elif "spending in" in prompt:
-        category = prompt.split("spending in ")[1].capitalize()
-        if category in df["Category"].str.capitalize().unique():
-            category_spending = df[df["Category"].str.capitalize() == category]["Amount ($)"].sum()
-            return f"Your spending in {category} is ${category_spending:.2f}."
-        else:
-            return f"Category '{category}' not found in the dataset."
+def search_dataset_for_category(category):
+    # Sum amounts for the specified category
+    category_sum = df[df['Category'].str.contains(category, case=False, na=False)]['Amount ($)'].sum()
+    if category_sum > 0:
+        return f"Your total spending in {category} is ${category_sum:.2f}."
     else:
-        return "Sorry, I didn't understand that. Please ask about your total spending or spending in a specific category."
+        return "It seems like there were no expenses in that category."
 
-# Streamlit app
-st.title('AI Finance Assistant')
+def generate_response(prompt):
+    # Use GPT-Neo to get an understanding of the query (simulated for this example)
+    interpreted_query = "Groceries"  # Placeholder for the model's output
+    
+    # Generate a response based on the interpreted query
+    response = search_dataset_for_category(interpreted_query)
+    
+    return response
 
-user_prompt = st.text_input("Ask about your spending:")
+# Example prompt from the user
+prompt = "How much did I spend on groceries last month?"
 
-if user_prompt:
-    response = ai_assistant_improved(user_prompt)
-    st.write(response)
+# Generate response based on the prompt
+response = generate_response(prompt)
+
+print(response)
