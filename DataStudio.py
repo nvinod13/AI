@@ -48,7 +48,7 @@ start_date, end_date = st.select_slider("Select a date range",
     )
 
 # Button to generate dummy data
-    if st.button('Generate Dummy Data'):
+if st.button('Generate Dummy Data'):
         system_selections = {
             'core_banking_platform': core_banking_platform,
             'cards_management_system': cards_management_system,
@@ -62,7 +62,7 @@ start_date, end_date = st.select_slider("Select a date range",
         st.success('Dummy data generated based on your selections.')
 
 # Display generated data if available
-    if 'data' in st.session_state and not st.session_state['data'].empty:
+if 'data' in st.session_state and not st.session_state['data'].empty:
         st.write("Generated Data Preview:")
         st.dataframe(st.session_state['data'])
 
