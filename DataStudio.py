@@ -27,28 +27,28 @@ def generate_dummy_data(system_selections, num_rows=100):
 # Define GUI for each engine
 def onboarding_engine():
    st.header("Onboarding Engine")
-    # Platform/system selection
+# Platform/system selection
     core_banking_platform = st.selectbox("Select Core Banking Platform", ["Temenos T24", "Oracle FLEXCUBE", "SAP Banking", "Infosys Finacle", "FIS Profile"])
     cards_management_system = st.selectbox("Select Cards Management System", ["System 1", "System 2", "System 3", "System 4", "System 5"])
     loan_origination_system = st.selectbox("Select Loan Origination System", ["LOS 1", "LOS 2", "LOS 3", "LOS 4", "LOS 5"])
     internet_banking_platform = st.selectbox("Select Internet Banking Platform", ["IBP 1", "IBP 2", "IBP 3", "IBP 4", "IBP 5"])
     data_warehouse = st.selectbox("Select Data Warehouse", ["DW 1", "DW 2", "DW 3", "DW 4", "DW 5"])
     
-    # User authentication
+# User authentication
     userid = st.text_input("UserID")
     password = st.text_input("Password", type="password")
     
-    # Database selection
+# Database selection
     database = st.selectbox("Select Database", ["Database 1", "Database 2", "Database 3"])
     
-    # Date picker for timeframe
+# Date picker for timeframe
     start_date, end_date = st.select_slider(
         "Select a date range",
         options=pd.date_range("2020-01-01", "2023-12-31").tolist(),
         value=(pd.Timestamp("2020-01-01"), pd.Timestamp("2023-12-31"))
     )
 
-    # Button to generate dummy data
+# Button to generate dummy data
     if st.button('Generate Dummy Data'):
         system_selections = {
             'core_banking_platform': core_banking_platform,
@@ -58,11 +58,11 @@ def onboarding_engine():
             'data_warehouse': data_warehouse,
             'database': database
         }
-        # Generate dummy data based on selected systems
+# Generate dummy data based on selected systems
         st.session_state['data'] = generate_dummy_data(system_selections, num_rows=100)
         st.success('Dummy data generated based on your selections.')
 
-    # Display generated data if available
+# Display generated data if available
     if 'data' in st.session_state and not st.session_state['data'].empty:
         st.write("Generated Data Preview:")
         st.dataframe(st.session_state['data'])
