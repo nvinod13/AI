@@ -4,3 +4,4 @@ matplotlib==3.4.3
 streamlit==1.26.0
 mplcursors==0.4
 plotly==5.1.0
+faker==9.6.0
