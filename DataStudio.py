@@ -1,13 +1,32 @@
 import streamlit as st
 import pandas as pd
+from faker import Faker
+fake = Faker()
 
 # Placeholder for global data storage in multi-page app scenarios
 if 'data' not in st.session_state:
     st.session_state.data = pd.DataFrame()
 
+# Function to generate dummy data based on system selections
+def generate_dummy_data(system_selections, num_rows=100):
+    data = {
+        'CustomerID': [fake.unique.random_int(min=10000, max=99999) for _ in range(num_rows)],
+        'Name': [fake.name() for _ in range(num_rows)],
+        'Email': [fake.email() for _ in range(num_rows)],
+        'Phone Number': [fake.phone_number() for _ in range(num_rows)],
+        'Transaction Date': [fake.date_between(start_date='-1y', end_date='today') for _ in range(num_rows)],
+        'Transaction Amount': [fake.random_number(digits=5) for _ in range(num_rows)],
+        'Account Type': [fake.random_element(elements=('Savings', 'Checking', 'Loan')) for _ in range(num_rows)]
+    }
+    
+    # You can customize the data further based on system selections if necessary
+    # For example, add specific fields or modify existing ones based on the selected systems
+    
+    return pd.DataFrame(data)
+    
 # Define GUI for each engine
 def onboarding_engine():
-    st.header("Onboarding Engine")
+   st.header("Onboarding Engine")
     # Platform/system selection
     core_banking_platform = st.selectbox("Select Core Banking Platform", ["Temenos T24", "Oracle FLEXCUBE", "SAP Banking", "Infosys Finacle", "FIS Profile"])
     cards_management_system = st.selectbox("Select Cards Management System", ["System 1", "System 2", "System 3", "System 4", "System 5"])
@@ -19,7 +38,7 @@ def onboarding_engine():
     userid = st.text_input("UserID")
     password = st.text_input("Password", type="password")
     
-    # Database selection (assuming a fixed list for simplicity)
+    # Database selection
     database = st.selectbox("Select Database", ["Database 1", "Database 2", "Database 3"])
     
     # Date picker for timeframe
@@ -28,6 +47,25 @@ def onboarding_engine():
         options=pd.date_range("2020-01-01", "2023-12-31").tolist(),
         value=(pd.Timestamp("2020-01-01"), pd.Timestamp("2023-12-31"))
     )
+
+    # Button to generate dummy data
+    if st.button('Generate Dummy Data'):
+        system_selections = {
+            'core_banking_platform': core_banking_platform,
+            'cards_management_system': cards_management_system,
+            'loan_origination_system': loan_origination_system,
+            'internet_banking_platform': internet_banking_platform,
+            'data_warehouse': data_warehouse,
+            'database': database
+        }
+        # Generate dummy data based on selected systems
+        st.session_state['data'] = generate_dummy_data(system_selections, num_rows=100)
+        st.success('Dummy data generated based on your selections.')
+
+    # Display generated data if available
+    if 'data' in st.session_state and not st.session_state['data'].empty:
+        st.write("Generated Data Preview:")
+        st.dataframe(st.session_state['data'])
 
 def auto_mapping_engine():
     st.header("Auto-mapping Engine")
