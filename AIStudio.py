@@ -100,9 +100,15 @@ def main():
         }
         sample_file_name = sample_files[use_case]
         sample_file_path = f"/blob/main/{sample_file_name}"
-        st.download_button("Press to Download", csv, "acquisition_data.csv", "text/csv", key='download-csv')
+        #st.download_button("Press to Download", csv, "acquisition_data.csv", "text/csv", key='download-csv')
         #st.download_button("Download Sample Dataset", sample_file_path)
-
+        
+        st.download_button(
+        label="Download data as CSV",
+        data=csv,
+        file_name=f'acquisition_data.csv',
+        mime='text/csv',
+        )
 
         
         def get_table_download_link(df):
