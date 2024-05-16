@@ -31,9 +31,15 @@ def main():
         
         # Option to download a sample dataset
         st.subheader("Download Sample Dataset")
-        sample_file_name = f"{use_case.lower()}_data.csv"
-        sample_file = f"./{sample_file_name}"
-        st.download_button("Download Sample Dataset", sample_file)
+        sample_files = {
+            "Acquisition": "acquisition_data.csv",
+            "Activation": "activation_data.csv",
+            "Engagement": "engagement_data.csv",
+            "Retention": "retention_data.csv"
+        }
+        sample_file_name = sample_files[use_case]
+        sample_file_path = f"/mnt/data/{sample_file_name}"
+        st.download_button("Download Sample Dataset", sample_file_path)
         
         # Option to upload a dataset
         st.subheader("Upload Your Dataset")
