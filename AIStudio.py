@@ -88,10 +88,10 @@ def main():
         # Option to download a sample dataset
         st.subheader("Download Sample Dataset")
         sample_file = {
-            "Acquisition": "acquisition_data",
-            "Activation": "activation_data",
-            "Engagement": "engagement_data",
-            "Retention": "retention_data"
+            "Acquisition": acquisition_data,
+            "Activation": activation_data,
+            "Engagement": engagement_data,
+            "Retention": retention_data
         }
 
 
