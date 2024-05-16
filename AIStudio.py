@@ -40,6 +40,8 @@ def main():
         sample_file_name = sample_files[use_case]
         sample_file_path = f"/blob/main/{sample_file_name}"
         st.download_button("Download Sample Dataset", sample_file_path)
+
+        st.markdown(f'<a href="data:file/csv;base64,{b64}" download="acquisition_data.csv">Download csv file</a>')
         
         # Option to upload a dataset
         st.subheader("Upload Your Dataset")
