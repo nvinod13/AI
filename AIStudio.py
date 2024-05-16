@@ -110,7 +110,8 @@ def main():
             file_name="large_df.csv",
             mime="text/csv",
         )
-
+        
+        df = acquisition_data
         # Acquisition
         # 1. Data Preparation and Feature Engineering
         def prepare_acquisition_data(df):
