@@ -100,8 +100,20 @@ def main():
         }
         sample_file_name = sample_files[use_case]
         sample_file_path = f"/blob/main/{sample_file_name}"
-        #st.download_button("Download Sample Dataset", sample_file_path)
-        st.download_button("Download Sample Dataset", acquisition_data_csv)
+        st.download_button("Download Sample Dataset", sample_file_path)
+
+
+        
+        st.markdown(get_table_download_link(acquisition_data), unsafe_allow_html=True)
+        def get_table_download_link(df):
+        """Generates a link allowing the data in a given panda dataframe to be downloaded
+        in:  dataframe
+        out: href string
+        """
+        csv = df.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+        href = f'<a href="data:file/csv;base64,{b64}">Download csv file</a>'
+
         
         # st.markdown(f'<a href="data:file/csv;base64,{b64}" download="acquisition_data.csv">Download csv file</a>')
         
