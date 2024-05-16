@@ -13,7 +13,7 @@ def generate_acquisition_data(num_samples=1000):
         'Income': np.random.randint(20000, 100000, num_samples),
         'Gender': np.random.choice(['Male', 'Female'], num_samples),
         'Region': np.random.choice(['North', 'South', 'East', 'West'], num_samples),
-        'CreditScore': np.random.randint(300, 850, num_samples)
+        'CreditScore': np.random.randint(300, 850, num_samples),
         'LikelihoodToConvert': np.random.rand(num_samples)
     }
     return pd.DataFrame(data)
