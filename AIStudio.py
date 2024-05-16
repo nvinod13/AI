@@ -57,11 +57,6 @@ activation_data = generate_activation_data()
 engagement_data = generate_engagement_data()
 retention_data = generate_retention_data()
 
-acquisition_data_csv = acquisition_data.to_csv('acquisition_data.csv', index=False)
-#activation_data_csv = activation_data.to_csv('activation_data.csv', index=False)
-#engagement_data_csv = engagement_data.to_csv('engagement_data.csv', index=False)
-#retention_data_csv = retention_data.to_csv('retention_data.csv', index=False)
-
 # Function to load a CSV file
 def load_csv(file):
     return pd.read_csv(file)
@@ -92,22 +87,19 @@ def main():
         
         # Option to download a sample dataset
         st.subheader("Download Sample Dataset")
-        sample_files = {
-            "Acquisition": "acquisition_data_csv.csv",
-            "Activation": "activation_data.csv",
-            "Engagement": "engagement_data.csv",
-            "Retention": "retention_data.csv"
+        sample_file = {
+            "Acquisition": "acquisition_data",
+            "Activation": "activation_data",
+            "Engagement": "engagement_data",
+            "Retention": "retention_data"
         }
-        sample_file_name = sample_files[use_case]
-        sample_file_path = f"/blob/main/{sample_file_name}"
-        #st.download_button("Press to Download", csv, "acquisition_data.csv", "text/csv", key='download-csv')
-        #st.download_button("Download Sample Dataset", sample_file_path)
+
 
         @st.cache_data
         def convert_df(df):
             # IMPORTANT: Cache the conversion to prevent computation on every rerun
             return df.to_csv().encode("utf-8")
-        csv = convert_df(acquisition_data)
+        csv = convert_df(sample_file)
         st.download_button(
             label="Download data as CSV",
             data=csv,
