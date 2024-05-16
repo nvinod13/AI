@@ -62,8 +62,6 @@ acquisition_data_csv = acquisition_data.to_csv('acquisition_data.csv', index=Fal
 #engagement_data_csv = engagement_data.to_csv('engagement_data.csv', index=False)
 #retention_data_csv = retention_data.to_csv('retention_data.csv', index=False)
 
-#b64 = base64.b64encode(acquisition_data_csv.encode()).decode()
-
 # Function to load a CSV file
 def load_csv(file):
     return pd.read_csv(file)
@@ -95,7 +93,7 @@ def main():
         # Option to download a sample dataset
         st.subheader("Download Sample Dataset")
         sample_files = {
-            "Acquisition": "acquisition_data.csv",
+            "Acquisition": "acquisition_data_csv.csv",
             "Activation": "activation_data.csv",
             "Engagement": "engagement_data.csv",
             "Retention": "retention_data.csv"
@@ -104,7 +102,7 @@ def main():
         sample_file_path = f"/blob/main/{sample_file_name}"
         st.download_button("Download Sample Dataset", sample_file_path)
 
-        st.markdown(f'<a href="data:file/csv;base64,{b64}" download="acquisition_data.csv">Download csv file</a>')
+       # st.markdown(f'<a href="data:file/csv;base64,{b64}" download="acquisition_data.csv">Download csv file</a>')
         
         # Option to upload a dataset
         st.subheader("Upload Your Dataset")
