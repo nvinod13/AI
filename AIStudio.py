@@ -1,5 +1,68 @@
 import streamlit as st
 import pandas as pd
+import base64
+import numpy as np
+
+# Function to generate acquisition dataset
+def generate_acquisition_data(num_samples=1000):
+    data = {
+        'CustomerID': np.arange(1, num_samples + 1),
+        'Age': np.random.randint(18, 70, num_samples),
+        'Income': np.random.randint(20000, 100000, num_samples),
+        'Gender': np.random.choice(['Male', 'Female'], num_samples),
+        'Region': np.random.choice(['North', 'South', 'East', 'West'], num_samples),
+        'CreditScore': np.random.randint(300, 850, num_samples)
+    }
+    return pd.DataFrame(data)
+
+# Function to generate activation dataset
+def generate_activation_data(num_samples=1000):
+    data = {
+        'CustomerID': np.arange(1, num_samples + 1),
+        'AccountCreatedDate': pd.date_range(start='2023-01-01', periods=num_samples, freq='D'),
+        'InitialDeposit': np.random.randint(100, 5000, num_samples),
+        'FirstTransactionAmount': np.random.randint(10, 1000, num_samples),
+        'CardActivated': np.random.choice([True, False], num_samples),
+        'OnlineBankingActivated': np.random.choice([True, False], num_samples)
+    }
+    return pd.DataFrame(data)
+
+# Function to generate engagement dataset
+def generate_engagement_data(num_samples=1000):
+    data = {
+        'CustomerID': np.arange(1, num_samples + 1),
+        'TotalTransactions': np.random.randint(0, 100, num_samples),
+        'TotalSpent': np.random.randint(0, 10000, num_samples),
+        'CustomerSupportCalls': np.random.randint(0, 10, num_samples),
+        'ServiceUsage': np.random.randint(0, 100, num_samples),
+        'LastLoginDate': pd.date_range(start='2023-01-01', periods=num_samples, freq='D')
+    }
+    return pd.DataFrame(data)
+
+# Function to generate retention dataset
+def generate_retention_data(num_samples=1000):
+    data = {
+        'CustomerID': np.arange(1, num_samples + 1),
+        'AccountAgeMonths': np.random.randint(1, 120, num_samples),
+        'LastTransactionDate': pd.date_range(start='2023-01-01', periods=num_samples, freq='D'),
+        'Churned': np.random.choice([True, False], num_samples),
+        'TotalSpentLastYear': np.random.randint(0, 5000, num_samples),
+        'CustomerSatisfactionScore': np.random.randint(1, 10, num_samples)
+    }
+    return pd.DataFrame(data)
+
+# Generating and saving datasets as CSV files
+acquisition_data = generate_acquisition_data()
+activation_data = generate_activation_data()
+engagement_data = generate_engagement_data()
+retention_data = generate_retention_data()
+
+acquisition_data_csv = acquisition_data.to_csv('acquisition_data.csv', index=False)
+activation_data_csv = activation_data.to_csv('activation_data.csv', index=False)
+engagement_data_csv = engagement_data.to_csv('engagement_data.csv', index=False)
+retention_data_csv = retention_data.to_csv('retention_data.csv', index=False)
+
+b64 = base64.b64encode(acquisition_data_csv.encode()).decode()
 
 # Function to load a CSV file
 def load_csv(file):
