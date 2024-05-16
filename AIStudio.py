@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import base64
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 # Function to generate acquisition dataset
 def generate_acquisition_data(num_samples=1000):
@@ -12,6 +14,7 @@ def generate_acquisition_data(num_samples=1000):
         'Gender': np.random.choice(['Male', 'Female'], num_samples),
         'Region': np.random.choice(['North', 'South', 'East', 'West'], num_samples),
         'CreditScore': np.random.randint(300, 850, num_samples)
+        'LikelihoodToConvert': np.random.rand(num_samples)
     }
     return pd.DataFrame(data)
 
@@ -107,20 +110,51 @@ def main():
             mime="text/csv",
         )
 
+        # Acquisition
+        # 1. Data Preparation and Feature Engineering
+        def prepare_acquisition_data(df):
+        # Assuming 'LikelihoodToConvert' is the target variable
+        X = df.drop(columns=['CustomerID', 'LikelihoodToConvert'])
+        y = df['LikelihoodToConvert']
         
-        def get_table_download_link(df):
-            """Generates a link allowing the data in a given panda dataframe to be downloaded
-            in:  dataframe
-            out: href string
-            """
-            csv = df.to_csv(index=False)
-            b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
-            href = f'<a href="data:file/csv;base64,{b64}">Download csv file</a>'
-        st.markdown(get_table_download_link(acquisition_data), unsafe_allow_html=True)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+        return X_train_scaled, X_test_scaled, y_train, y_test, scaler
 
+        # 2. Model Training and Prediction
+        from sklearn.linear_model import LinearRegression
+        def train_acquisition_model(X_train, y_train):
+            model = LinearRegression()
+            model.fit(X_train, y_train)
+            return model
         
-        # st.markdown(f'<a href="data:file/csv;base64,{b64}" download="acquisition_data.csv">Download csv file</a>')
-        
+        def predict_acquisition(model, X_test):
+            predictions = model.predict(X_test)
+            return prediction
+
+        # 3. Model Validation
+        from sklearn.metrics import mean_squared_error, r2_score
+        def validate_acquisition_model(y_test, predictions):
+            mse = mean_squared_error(y_test, predictions)
+            r2 = r2_score(y_test, predictions)
+            return mse, r2
+
+        # 4 Model Fine-tuning
+        from sklearn.model_selection import GridSearchCV
+        def fine_tune_acquisition_model(X_train, y_train):
+            model = LinearRegression()
+            param_grid = {
+                'fit_intercept': [True, False],
+                'normalize': [True, False]
+            }
+            grid_search = GridSearchCV(model, param_grid, cv=5, scoring='neg_mean_squared_error')
+            grid_search.fit(X_train, y_train)
+            best_model = grid_search.best_estimator_
+            return best_model
+    
         # Option to upload a dataset
         st.subheader("Upload Your Dataset")
         uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
