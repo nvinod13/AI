@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import base64
 import numpy as np
+import sklearn
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
