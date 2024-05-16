@@ -58,6 +58,7 @@ engagement_data = generate_engagement_data()
 retention_data = generate_retention_data()
 
 acquisition_data_csv = acquisition_data.to_csv('acquisition_data.csv', index=False)
+print("Dummy datasets generated and saved successfully.")
 activation_data_csv = activation_data.to_csv('activation_data.csv', index=False)
 engagement_data_csv = engagement_data.to_csv('engagement_data.csv', index=False)
 retention_data_csv = retention_data.to_csv('retention_data.csv', index=False)
