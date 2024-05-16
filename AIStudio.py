@@ -102,12 +102,17 @@ def main():
         sample_file_path = f"/blob/main/{sample_file_name}"
         #st.download_button("Press to Download", csv, "acquisition_data.csv", "text/csv", key='download-csv')
         #st.download_button("Download Sample Dataset", sample_file_path)
-        
+
+        @st.cache_data
+        def convert_df(df):
+            # IMPORTANT: Cache the conversion to prevent computation on every rerun
+            return df.to_csv().encode("utf-8")
+        csv = convert_df(acquisition_data)
         st.download_button(
-        label="Download data as CSV",
-        data=csv,
-        file_name=f'acquisition_data.csv',
-        mime='text/csv',
+            label="Download data as CSV",
+            data=csv,
+            file_name="large_df.csv",
+            mime="text/csv",
         )
 
         
