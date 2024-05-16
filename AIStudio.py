@@ -100,7 +100,7 @@ def main():
         }
         sample_file_name = sample_files[use_case]
         # sample_file_path = f"/blob/main/{sample_file_name}"
-        sample_file_path = f"/blob/main/acquisition_data.csv"
+        sample_file_path = f"/acquisition_data.csv"
         st.download_button("Download Sample Dataset", sample_file_path)
 
 
