@@ -74,7 +74,7 @@ with tabs[1]:
     st.header("CxO Agent")
     query = st.text_input("How many FX transactions can we expect next week in the TH-MY corridor?", key="cxo")
     if st.button("Search", key="cxo_button"):
-        if query.lower() ="How many FX transactions can we expect next week in the TH-MY corridor":
+        if query.lower() == "how many fx transactions can we expect next week in the th-my corridor?":
             st.subheader("Weekly Forecast of FX Transactions in TH-MY Corridor")
             weeks = ["Week -4", "Week -3", "Week -2", "Week -1", "Next Week"]
             values = np.random.randint(100, 200, size=5)
