@@ -66,7 +66,7 @@ tabs = st.tabs(["View Sample Data", "CxO Agent", "Consumer Agent", "Employee Age
 
 # View Sample Data Tab
 with tabs[0]:
-    st.header("Sample Data")
+    st.header("Sample Remittance Transaction Data")
     st.dataframe(sample_data.head(25))
 
 # CxO Concierge Tab
