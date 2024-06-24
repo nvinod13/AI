@@ -59,7 +59,7 @@ def generate_sample_data():
 sample_data = generate_sample_data()
 
 # App Layout
-st.title("Remittance AI Dashboard")
+st.title("Western Union - AI Agents")
 
 # Tabs
 tabs = st.tabs(["View Sample Data", "CxO Agent", "Consumer Agent", "Employee Agent", "Partner Agent"])
