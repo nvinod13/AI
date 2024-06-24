@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 
-# Generate sample data for the initial dataset
 def generate_sample_data():
     data = {
         "Transaction ID": [f"TXN00{i}" for i in range(1, 26)],
@@ -74,17 +74,14 @@ with tabs[1]:
     st.header("CxO Agent")
     query = st.text_input("How many FX transactions can we expect next week in the TH-MY corridor?", key="cxo")
     if st.button("Search", key="cxo_button"):
-        if query.lower() == "how many fx transactions can we expect next week in the th-my corridor?":
+        if query.lower() == "how many fx transactions are expected tomorrow in the th-my corridor?":
             st.subheader("Weekly Forecast of FX Transactions in TH-MY Corridor")
             weeks = ["Week -4", "Week -3", "Week -2", "Week -1", "Next Week"]
             values = np.random.randint(100, 200, size=5)
-            plt.figure(figsize=(10, 6))
-            plt.plot(weeks, values, marker='o')
-            plt.title("Weekly FX Transactions Forecast")
-            plt.xlabel("Week")
-            plt.ylabel("Number of Transactions")
-            plt.grid(True)
-            st.pyplot(plt)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=weeks, y=values, mode='lines+markers', name='FX Transactions'))
+            fig.update_layout(title="Weekly FX Transactions Forecast", xaxis_title="Week", yaxis_title="Number of Transactions")
+            st.plotly_chart(fig)
 
 # Consumer App Tab
 with tabs[2]:
@@ -95,13 +92,10 @@ with tabs[2]:
             st.subheader("Weekly Forecast of FX Rates in TH-MY Corridor")
             weeks = ["Week -4", "Week -3", "Week -2", "Week -1", "Next Week", "Week +1", "Week +2", "Week +3"]
             values = np.random.uniform(0.25, 0.75, size=8)
-            plt.figure(figsize=(10, 6))
-            plt.plot(weeks, values, marker='o')
-            plt.title("Weekly FX Rates Forecast")
-            plt.xlabel("Week")
-            plt.ylabel("FX Rate")
-            plt.grid(True)
-            st.pyplot(plt)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=weeks, y=values, mode='lines+markers', name='FX Rates'))
+            fig.update_layout(title="Weekly FX Rates Forecast", xaxis_title="Week", yaxis_title="FX Rate")
+            st.plotly_chart(fig)
 
 # Employee App Tab
 with tabs[3]:
@@ -109,24 +103,15 @@ with tabs[3]:
     query = st.text_input("How many walk-ins can I expect in Pagoda Street Branch after 2pm next Saturday?", key="employee")
     if st.button("Search", key="employee_button"):
         if query.lower() == "how many walk-ins can i expect in pagoda street branch after 2pm next saturday?":
-            st.subheader("Daily Forecast of Customer Walk-Ins at Pagoda Street Branch on Saturdays")
+            st.subheader("Daily Forecast of Customer Walk-Ins at Pagoda Street Branch")
             days = ["Saturday -4", "Saturday -3", "Saturday -2", "Saturday -1", "Next Saturday"]
             total_walkins = np.random.randint(50, 100, size=5)
             walkins_after_2pm = np.random.randint(20, 50, size=5)
-            fig, ax = plt.subplots(2, 1, figsize=(10, 10))
-            ax[0].plot(days, total_walkins, marker='o', label="Total Walk-Ins")
-            ax[0].set_title("Total Customer Walk-Ins")
-            ax[0].set_xlabel("Day")
-            ax[0].set_ylabel("Number of Walk-Ins")
-            ax[0].grid(True)
-            ax[0].legend()
-            ax[1].plot(days, walkins_after_2pm, marker='o', label="Walk-Ins After 2 PM")
-            ax[1].set_title("Customer Walk-Ins After 2 PM")
-            ax[1].set_xlabel("Day")
-            ax[1].set_ylabel("Number of Walk-Ins")
-            ax[1].grid(True)
-            ax[1].legend()
-            st.pyplot(fig)
+            fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.1)
+            fig.add_trace(go.Scatter(x=days, y=total_walkins, mode='lines+markers', name='Total Walk-Ins'), row=1, col=1)
+            fig.add_trace(go.Scatter(x=days, y=walkins_after_2pm, mode='lines+markers', name='Walk-Ins After 2 PM'), row=2, col=1)
+            fig.update_layout(title="Customer Walk-Ins Forecast", xaxis_title="Day", yaxis_title="Number of Walk-Ins")
+            st.plotly_chart(fig)
 
 # Agent App Tab
 with tabs[4]:
@@ -139,11 +124,8 @@ with tabs[4]:
             customers_acquired = [20, 15, 12, 10]
             target = 80
             variance = target - sum(customers_acquired)
-            plt.figure(figsize=(10, 6))
-            plt.plot(weeks, customers_acquired, marker='o')
-            plt.title("Weekly Customer Acquisition Forecast")
-            plt.xlabel("Week")
-            plt.ylabel("Number of Customers Acquired")
-            plt.grid(True)
-            st.pyplot(plt)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=weeks, y=customers_acquired, mode='lines+markers', name='Customers Acquired'))
+            fig.update_layout(title="Weekly Customer Acquisition Forecast", xaxis_title="Week", yaxis_title="Number of Customers Acquired")
+            st.plotly_chart(fig)
             st.write(f"Variance from target of 80 customers: {variance}")
