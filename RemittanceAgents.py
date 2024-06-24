@@ -109,7 +109,7 @@ with tabs[3]:
     query = st.text_input("How many walk-ins can I expect in Pagoda Street Branch after 2pm next Saturday?", key="employee")
     if st.button("Search", key="employee_button"):
         if query.lower() == "how many walk-ins can i expect in pagoda street branch after 2pm next saturday?":
-            st.subheader("Daily Forecast of Customer Walk-Ins at Pagoda Street Branch")
+            st.subheader("Daily Forecast of Customer Walk-Ins at Pagoda Street Branch on Saturdays")
             days = ["Saturday -4", "Saturday -3", "Saturday -2", "Saturday -1", "Next Saturday"]
             total_walkins = np.random.randint(50, 100, size=5)
             walkins_after_2pm = np.random.randint(20, 50, size=5)
