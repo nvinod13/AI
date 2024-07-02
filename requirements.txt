@@ -6,3 +6,4 @@ mplcursors==0.4
 plotly==5.1.0
 faker==9.6.0
 scikit-learn
+openai
