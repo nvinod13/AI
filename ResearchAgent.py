@@ -46,14 +46,6 @@ def main():
                 output = query_llm(user_input)
                 st.success("Query Complete!")
                 st.write(output)
-
-                # Download button
-                st.download_button(
-                    label="Download",
-                    data=output,
-                    file_name='research_output.txt',
-                    mime='text/plain'
-                )
         else:
             st.error("Please enter a valid input")
 
