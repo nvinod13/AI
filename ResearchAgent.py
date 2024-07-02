@@ -31,9 +31,6 @@ def query_llm(prompt):
         report = await fetch_report(QUERY, REPORT_TYPE)
         print(report)
 
-# Use await within the existing event loop instead of asyncio.run()
-    await generate_research_report()
-
 
 def main():
     st.title("Research Agent")
