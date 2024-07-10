@@ -106,16 +106,7 @@ st.write(filtered_use_cases_df)
 # st.write("All Use Cases:")
 # st.write(use_cases_df)
 ################################
-# Function to create Gantt chart
-def create_gantt_chart(assigned_use_cases):
-    if assigned_use_cases:
-        df = pd.DataFrame(assigned_use_cases)
-        df['Start'] = df['Timeline']
-        df['Finish'] = df['Start'] + pd.DateOffset(months=2)  # Fixed duration of 2 months
-        fig = px.timeline(df, x_start="Start", x_end="Finish", y="Use Case", color="Category",
-                          title="AI Roadmap Gantt Chart", labels={"Use Case": "AI Use Cases"})
-        fig.update_yaxes(categoryorder="total ascending")
-        st.plotly_chart(fig)
+
 
 # Assign fixed duration and budget to use cases
 selected_use_case = st.selectbox("Select a Use Case", filtered_use_cases_df["Use Case"])
@@ -151,6 +142,16 @@ st.write(assigned_use_cases_df)
 st.subheader("Gantt Chart Visualization (Mockup)")
 # Note: In a real implementation, you would use a library to generate a Gantt chart
 st.write("Gantt Chart visualization would appear here.")
+# Function to create Gantt chart
+def create_gantt_chart(assigned_use_cases):
+    if assigned_use_cases:
+        df = pd.DataFrame(assigned_use_cases)
+        df['Start'] = df['Timeline']
+        df['Finish'] = df['Start'] + pd.DateOffset(months=2)  # Fixed duration of 2 months
+        fig = px.timeline(df, x_start="Start", x_end="Finish", y="Use Case", color="Category",
+                          title="AI Roadmap Gantt Chart", labels={"Use Case": "AI Use Cases"})
+        fig.update_yaxes(categoryorder="total ascending")
+        st.plotly_chart(fig)
 
 # Generate PowerPoint
 if st.button("Generate PowerPoint"):
