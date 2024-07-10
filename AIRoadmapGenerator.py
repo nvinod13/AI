@@ -143,6 +143,7 @@ st.subheader("Gantt Chart Visualization (Mockup)")
 # Note: In a real implementation, you would use a library to generate a Gantt chart
 st.write("Gantt Chart visualization would appear here.")
 # Function to create Gantt chart
+import plotly.express as px
 def create_gantt_chart(assigned_use_cases):
     if assigned_use_cases:
         df = pd.DataFrame(assigned_use_cases)
