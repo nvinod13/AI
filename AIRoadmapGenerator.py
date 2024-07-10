@@ -153,6 +153,9 @@ def create_gantt_chart(assigned_use_cases):
         fig.update_yaxes(categoryorder="total ascending")
         st.plotly_chart(fig)
 
+# Create and display Gantt chart
+create_gantt_chart(st.session_state.assigned_use_cases)
+
 # Generate PowerPoint
 if st.button("Generate PowerPoint"):
     prs = generate_ppt(st.session_state.assigned_use_cases)
