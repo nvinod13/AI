@@ -103,8 +103,8 @@ st.write("Filtered Use Cases:")
 st.write(filtered_use_cases_df)
 
 # Display all use cases
-st.write("All Use Cases:")
-st.write(use_cases_df)
+# st.write("All Use Cases:")
+# st.write(use_cases_df)
 ################################
 # Function to create Gantt chart
 def create_gantt_chart(assigned_use_cases):
