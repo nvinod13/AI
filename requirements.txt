@@ -8,3 +8,4 @@ faker==9.6.0
 scikit-learn
 openai
 gpt_researcher
+python-pptx
